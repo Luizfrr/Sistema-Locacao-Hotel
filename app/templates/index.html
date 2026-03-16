@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva de Quartos - Hotel Sunny Sea</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
+</head>
+
+<body>
+    <section class="h-screen bg-cover bg-center bg-no-repeat bg-[url('{{ url_for('static', filename='images/backg3.png') }}')]">
+        <nav class="container flex justify-end p-6">
+            <ul>
+                <li class="space-x-4 text-white text-2xl">
+                    <a href="" class="font-medium">Sobre</a>
+                    <a href="" class="font-medium">Contato</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="container flex flex-col justify-center items-center mt-16">
+            <h3 class="text-sm font-semibold tracking-widest text-gray-700 uppercase">HOTEL</h3>
+            <h1 class="text-4xl font-bold text-yellow-500 italic">Sunny Sea</h1>
+            <h1 class="text-5xl md:text-6xl font-extrabold text-white text-center leading-tight">
+            <span>Paraíso Tropical</span><br />
+            <span>à Beira-Mar</span>
+            </h1>
+            <p class="text-lg text-white text-center mt-4 max-w-xl mx-auto">Experimente uma estadia incrível em nosso hotel à beira-mar, com vistas deslumbrantes e conforto excepcional.</p>
+            <button class="bg-yellow-500 transition hover:bg-yellow-600 text-white font-semibold px-6 py-3 rounded shadow-lg mt-6">Saiba mais</button>
+        </div>
+    </section>
+
+    <div class="bg-orange-400 text-white text-center py-3 font-semibold">
+        Oferta especial: Reserve agora e ganhe 20% de desconto!
+    </div>
+
+    <section class="py-16 bg-white">
+        <div class="container mx-auto flex flex-col md:flex-row items-start gap-10 px-6">
+            <img src="{{ url_for('static', filename='images/sobres.jpg') }}" alt="Vista do hotel" 
+                class="w-full md:w-2/5 max-w-lg rounded shadow-lg" />
+
+            <div class="md:w-1/2">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">Sobre o Hotel</h2>
+                <p class="text-gray-600 text-lg">
+                    Descubra o equilíbrio perfeito entre conforto moderno e a deslumbrante beleza natural à beira-mar. Desfrute de uma experiência inesquecível em nossas acomodações luxuosas, projetadas para oferecer relaxamento total, vistas panorâmicas incríveis e um atendimento caloroso que faz você se sentir em casa.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold text-gray-800 mb-10">Principais Serviços</h2>
+            <div class="grid md:grid-cols-3 gap-10">
+
+                <div>
+                    <div class="text-5xl mb-4">🛏️</div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Acomodações Confortáveis</h3>
+                    <p class="text-gray-600">Luxuosos quartos com todo o conforto que você merece.</p>
+                </div>
+
+                <div>
+                    <div class="text-5xl mb-4">🍽️</div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Restaurante Excepcional</h3>
+                    <p class="text-gray-600">Culinária gourmet com vista para o mar.</p>
+                </div>
+
+                <div>
+                    <div class="text-5xl mb-4">🧘</div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Spa e Bem-Estar</h3>
+                    <p class="text-gray-600">Massagens, terapias e tratamentos para relaxar corpo e mente.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <div class="bg-orange-400 text-white text-center py-3 font-semibold">
+        Oferta especial: Reserve agora e ganhe 20% de desconto!
+    </div>
+
+
+    <div class="max-w-2xl mx-auto mt-16 px-6 py-10 bg-white rounded shadow-md" id="formulario">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="mb-4 p-3 bg-green-100 text-green-800 rounded">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" class="space-y-6">
+            {{ form.hidden_tag() }}
+            {{ form.total_value(id="total_value") }}
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">{{ form.name.label() }}</label>
+                {{ form.name(class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500") }}
+                {% if form.name.errors %}
+                    <span class="text-sm text-red-600">{{ form.name.errors[0] }}</span>
+                {% endif %}
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">{{ form.telephone.label() }}</label>
+                {{ form.telephone(id="telephone_format", class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500") }}
+                {% if form.telephone.errors %}
+                    <span class="text-sm text-red-600">{{ form.telephone.errors[0] }}</span>
+                {% endif %}
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">{{ form.entry_date.label() }}</label>
+                <select name="{{ form.entry_date.name }}" id="entry_date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500">
+                    <option value="">Selecione</option>
+                    {% for choice in form.entry_date.choices %}
+                        <option value="{{ choice[0] }}">{{ choice[1] }}</option>
+                    {% endfor %}
+                </select>
+                {% if form.entry_date.errors %}
+                    <span class="text-sm text-red-600">{{ form.entry_date.errors[0] }}</span>
+                {% endif %}
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">{{ form.exit_date.label() }}</label>
+                <select name="{{ form.exit_date.name }}" id="exit_date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500">
+                    <option value="">Selecione</option>
+                    {% for choice in form.exit_date.choices %}
+                        <option value="{{ choice[0] }}">{{ choice[1] }}</option>
+                    {% endfor %}
+                </select>
+                {% if form.exit_date.errors %}
+                    <span class="text-sm text-red-600">{{ form.exit_date.errors[0] }}</span>
+                {% endif %}
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">{{ form.room_type.label() }}</label>
+                <select name="{{ form.room_type.name }}" id="room_type" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500">
+                    <option value="">Selecione as datas primeiro</option>
+                </select>
+                {% if form.room_type.errors %}
+                    <span class="text-sm text-red-600">{{ form.room_type.errors[0] }}</span>
+                {% endif %}
+            </div>
+
+            <div class="text-lg font-semibold text-gray-800">
+                Valor Total: <span id="valor_total" class="text-yellow-600">R$ 0,00</span>
+            </div>
+
+            <div>
+                {{ form.submit(class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded shadow") }}
+            </div>
+        </form>
+    </div>
+
+
+    <footer class="bg-gray-800 text-white py-8 mt-16">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+            <div class="mb-4 md:mb-0">
+                <h3 class="text-2xl font-bold text-yellow-500">Hotel Sunny Sea</h3>
+                <p class="text-gray-300 text-sm">© 2025 Todos os direitos reservados.</p>
+            </div>
+            <div class="space-x-4">
+                <a href="#" class="text-gray-300 hover:text-white transition">Política de Privacidade</a>
+                <a href="#" class="text-gray-300 hover:text-white transition">Termos de Uso</a>
+                <a href="#" class="text-gray-300 hover:text-white transition">Contato</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/functions.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/cleave.js') }}"></script>    
+</body>
+</html>

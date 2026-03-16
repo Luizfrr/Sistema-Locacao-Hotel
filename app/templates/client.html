@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informações do Cliente</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+    <div class="max-w-3xl mx-auto mt-12 p-6 bg-white rounded-xl shadow-md space-y-6">
+        <h2 class="text-2xl font-bold text-yellow-600">Informações do Cliente</h2>
+
+        <div class="space-y-1">
+            <p><span class="font-semibold">Nome:</span> {{ dados.cliente.name }}</p>
+            <p><span class="font-semibold">Telefone:</span> {{ dados.cliente.telephone }}</p>
+        </div>
+
+        <div class="space-y-1">
+            {% if dados.booking %}
+                <p><span class="font-semibold">Data de entrada:</span> {{ dados.booking.entry_date.strftime('%d/%m/%Y') }}</p>
+                <p><span class="font-semibold">Data de saída:</span> {{ dados.booking.exit_date.strftime('%d/%m/%Y') }}</p>
+            {% else %}
+                <p class="text-red-600">Este cliente não possui reservas.</p>
+            {% endif %}
+        </div>
+
+        <div class="space-y-1">
+            <p class="font-semibold">Quarto</p>
+            {% if dados.quarto %}
+                <p><span class="font-semibold">Número:</span> {{ dados.quarto.number }}</p>
+                <p><span class="font-semibold">Tipo:</span> {{ dados.quarto.room_type }}</p>
+            {% endif %}
+        </div>
+
+        <div class="space-y-1">
+            <h2 class="text-2xl font-bold text-yellow-600">Pagamento</h2>
+            {% if dados.pagamento %}
+                <p><span class="font-semibold">Valor:</span> R$ {{ dados.pagamento.value }}</p>
+                <p><span class="font-semibold">Status:</span> {{ dados.pagamento.status }}</p>
+            {% endif %}
+        </div>
+
+        <div class="space-y-1">
+            <h2 class="text-2xl font-bold text-yellow-600">Check-in / Check-out</h2>
+            <form action="/cliente/check/{{ dados.booking.id }}" method="POST" class="space-y-4">
+                <div>
+                    <label for="check_in" class="block text-sm font-medium text-gray-700">Check-in:</label>
+                    <input type="datetime-local" id="check_in" name="check_in"
+                        value="{{ dados.check.check_in.strftime('%Y-%m-%dT%H:%M') if dados.check and dados.check.check_in else '' }}"
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500">
+                </div>
+
+                <div>
+                    <label for="check_out" class="block text-sm font-medium text-gray-700">Check-out:</label>
+                    <input type="datetime-local" id="check_out" name="check_out"
+                        value="{{ dados.check.check_out.strftime('%Y-%m-%dT%H:%M') if dados.check and dados.check.check_out else '' }}"
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500">
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded shadow">
+                    Salvar Check-in/Check-out
+                </button>
+            </form>
+        </div>
+
+
+        <form action="/cliente/update/{{ cliente.id }}" method="POST" class="space-y-4">
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">Nome:</label>
+                <input type="text" id="name" name="name" value="{{ cliente.name }}" required
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500">
+            </div>
+
+            <div>
+                <label for="telephone" class="block text-sm font-medium text-gray-700">Telefone:</label>
+                <input type="text" id="telephone_format" name="telephone" value="{{ cliente.telephone }}" required
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500">
+            </div>
+
+            <button type="submit"
+                class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded shadow">
+                Atualizar
+            </button>
+        </form>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/cleave.js') }}"></script>
+</body>
+</html>

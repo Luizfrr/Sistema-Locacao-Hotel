@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Funcionários - Hotel Sunny Sea</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+    <div class="container mx-auto mt-10 p-6 bg-white shadow-md rounded-xl">
+        <h1 class="text-2xl font-bold text-yellow-600 mb-6">Funcionários - Hotel Sunny Sea</h1>
+
+        <div class="overflow-x-auto">
+            <table class="min-w-full table-auto border border-gray-300 rounded-lg">
+                <thead class="bg-yellow-100">
+                    <tr>
+                        <th class="px-4 py-2 border-b text-left">Nome</th>
+                        <th class="px-4 py-2 border-b text-left">Telefone</th>
+                        <th class="px-4 py-2 border-b text-left">CPF</th>
+                        <th class="px-4 py-2 border-b text-left">Nascimento</th>
+                        <th class="px-4 py-2 border-b text-left">Admissão</th>
+                        <th class="px-4 py-2 border-b text-left">Cargo</th>
+                        <th class="px-4 py-2 border-b text-left">Editar</th>
+                        <th class="px-4 py-2 border-b text-left">Excluir</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for funcionario in funcionarios %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-2">{{ funcionario.name }}</td>
+                        <td class="px-4 py-2">{{ funcionario.telephone }}</td>
+                        <td class="px-4 py-2">{{ funcionario.cpf }}</td>
+                        <td class="px-4 py-2">{{ funcionario.date_of_birth.strftime('%d/%m/%Y') }}</td>
+                        <td class="px-4 py-2">{{ funcionario.hiring_date.strftime('%d/%m/%Y') }}</td>
+                        <td class="px-4 py-2">{{ funcionario.job_title }}</td>
+                        <td class="px-4 py-2">
+                            <a href="{{ url_for('funcionario_edit', id=funcionario.id) }}">
+                                <button class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700 transition">
+                                    Editar
+                                </button>
+                            </a>
+                        </td>
+                        <td class="px-4 py-2">
+                            <form action="{{ url_for('funcionario_delete', id=funcionario.id) }}" method="POST" onsubmit="return confirm('Deseja excluir este funcionário?');">
+                                <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 transition">
+                                    Excluir
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
